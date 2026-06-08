@@ -1,18 +1,17 @@
 import { Router, Request, Response } from 'express';
-import pool from '../config/database';
+import prisma from '../config/prisma';
 
 const router = Router();
 
-//GET /health - verificar el estado del servidor y la BD
 router.get('/', async (req: Request, res: Response) => {
     try {
-        const result = await pool.query('SELECT NOW() as timestamp');
+        const result = await prisma.$queryRaw<[{ timestamp: Date }]>`SELECT NOW() as timestamp`;
         res.json({
           status: 'ok',
           message: 'TaskFlow API funcionando correctamente',
           database: {
             status: 'connected',
-            timestamp: result.rows[0].timestamp,
+            timestamp: result[0].timestamp,
           },
           environment: process.env.NODE_ENV || 'development',
         });
