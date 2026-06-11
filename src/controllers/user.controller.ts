@@ -54,8 +54,9 @@ export const usersController = {
       const { name, email } = req.body as UpdateUserDto;
       const user = await usersService.update(req.params.id as string, { name, email });
       res.json({ data: user });
-    } catch (error: any) {
-      if (error?.code === 'P2025') {
+    } catch (error: unknown) {
+      const err = error as { code?: string };
+      if (err.code === 'P2025') {
         res.status(404).json({ error: "Usuario no encontrado" });
         return;
       }
@@ -68,8 +69,9 @@ export const usersController = {
     try {
       await usersService.remove(req.params.id as string);
       res.status(204).send();
-    } catch (error: any) {
-      if (error?.code === 'P2025') {
+    } catch (error: unknown) {
+      const err = error as { code?: string };
+      if (err.code === 'P2025') {
         res.status(404).json({ error: "Usuario no encontrado" });
         return;
       }

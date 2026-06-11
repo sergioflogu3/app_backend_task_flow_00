@@ -35,8 +35,9 @@ export const projectsController = {
       }
       const project = await projectsService.create({ name, description, ownerId });
       res.status(201).json({ data: project });
-    } catch (error: any) {
-      if (error?.code === 'P2003') {
+    } catch (error: unknown) {
+      const err = error as { code?: string };
+      if (err.code === 'P2003') {
         res.status(400).json({ error: "El ownerId no existe en la base de datos" });
         return;
       }
@@ -49,8 +50,9 @@ export const projectsController = {
       const { name, description } = req.body as UpdateProjectDto;
       const project = await projectsService.update(req.params.id as string, { name, description });
       res.json({ data: project });
-    } catch (error: any) {
-      if (error?.code === 'P2025') {
+    } catch (error: unknown) {
+      const err = error as { code?: string };
+      if (err.code === 'P2025') {
         res.status(404).json({ error: "Proyecto no encontrado" });
         return;
         }
@@ -62,8 +64,9 @@ export const projectsController = {
     try {
       await projectsService.remove(req.params.id as string);
       res.status(204).send();
-    } catch (error: any) {
-      if (error?.code === 'P2025') {
+    } catch (error: unknown) {
+      const err = error as { code?: string };
+      if (err.code === 'P2025') {
         res.status(404).json({ error: "Proyecto no encontrado" });
         return;
       }
