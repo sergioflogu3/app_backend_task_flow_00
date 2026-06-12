@@ -40,6 +40,7 @@ async function main() {
     await prisma.$connect();
     console.log('✅ Conexión a PostgreSQL establecida');
 
+
     app.listen(port, () => {
         console.log(`🚀 Servidor TaskFlow corriendo en http://localhost:${port}`);
         console.log(`🔍 Health check: http://localhost:${port}/health`);
