@@ -5,6 +5,7 @@ import prisma from './config/prisma';
 import healthRouter from './routes/health';
 import usersRouter from './routes/users';
 import projectsRouter from './routes/projects';
+import authRouter from './routes/auth';
 dotenv.config();
 
 const app: Application = express();
@@ -19,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/health', healthRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/projects', projectsRouter); 
+app.use('/api/auth', authRouter);
 
 //Ruta raiz informativa
 app.get('/', (req: Request, res: Response) => {

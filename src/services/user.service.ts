@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client';
 import prisma from '../config/prisma';
 import { CreateUserDto, UpdateUserDto, UserPublic } from '../types/user.types';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 // Campos seguros que devolvemos al cliente (sin passwordHash)
 const USER_SELECT = {
