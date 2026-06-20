@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express';
 import prisma from './config/prisma';
 import { swaggerSpec } from './config/swagger';
+import { errorMiddleware } from './middleware/error.middleware';
+import { apiResponse } from './utils/api-response';
 import healthRouter from './routes/health';
 import usersRouter from './routes/users';
 import projectsRouter from './routes/projects';
@@ -46,7 +48,12 @@ app.get('/', (req: Request, res: Response) => {
 
 //Manejo de errores encontrados
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    res.status(404).json({ error: 'Ruta no encontrada' });
+    errorMiddleware(err, req, res, next);
+});
+
+// 404 handler
+app.use((req: Request, res: Response) => {
+    res.status(404).json(apiResponse(404, 'Ruta no encontrada', undefined, 'NOT_FOUND'));
 });
 
 // Iniciar el servidor

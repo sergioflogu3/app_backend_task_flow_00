@@ -24,6 +24,16 @@ const options: swaggerJsdoc.Options = {
         },
       },
       schemas: {
+        ApiResponse: {
+          type: 'object',
+          properties: {
+            status: { type: 'integer' },
+            message: { type: 'string' },
+            data: { type: 'object', nullable: true },
+            error: { type: 'string', nullable: true },
+            timestamp: { type: 'string', format: 'date-time' },
+          },
+        },
         User: {
           type: 'object',
           properties: {
