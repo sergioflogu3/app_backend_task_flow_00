@@ -1,11 +1,16 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import swaggerUi from 'swagger-ui-express';
 import prisma from './config/prisma';
+import { swaggerSpec } from './config/swagger';
 import healthRouter from './routes/health';
 import usersRouter from './routes/users';
 import projectsRouter from './routes/projects';
 import authRouter from './routes/auth';
+import commetsRouter from './routes/commets';
+import tasksRouter from './routes/tasks';
+
 dotenv.config();
 
 const app: Application = express();
@@ -19,16 +24,23 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use('/api/health', healthRouter);
 app.use('/api/users', usersRouter);
-app.use('/api/projects', projectsRouter); 
+app.use('/api/projects', projectsRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/comments', commetsRouter);
+app.use('/api/tasks', tasksRouter);
+
+// Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get('/api-docs.json', (req: Request, res: Response) => {
+    res.json(swaggerSpec);
+});
 
 //Ruta raiz informativa
 app.get('/', (req: Request, res: Response) => {
     res.json({
-        message: '🚀 TaskFlow API — Clase 1',
+        message: '🚀 TaskFlow API',
         version: '1.0.0',
-        docs: '/health',
-
+        docs: '/api-docs',
     });
 });
 

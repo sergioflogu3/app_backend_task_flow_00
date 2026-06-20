@@ -29,6 +29,8 @@ npm start    # node dist/index.js
 - `src/services/*.service.ts` — business logic and DB access via Prisma
 - `src/config/prisma.ts` — Prisma client singleton
 - `src/types/*.types.ts` — DTOs and public types
+- `src/middleware/*.middleware.ts` — auth and validation middleware
+- `src/schemas/*.schemas.ts` — Zod validation schemas
 
 ## Important Patterns
 - Passwords hashed with bcrypt (10 rounds) before storage
@@ -41,8 +43,8 @@ npm start    # node dist/index.js
 PORT=3000
 DATABASE_URL=postgresql://...
 NODE_ENV=development
-JWT_SECRET=...        # defined in .env.example, not yet used in code
-JWT_EXPIRES_IN=7d     # defined in .env.example, not yet used in code
+JWT_SECRET=...        # used for signing/verifying JWT tokens
+JWT_EXPIRES_IN=7d     # JWT token expiration
 ```
 
 ## Endpoints
@@ -54,6 +56,11 @@ JWT_EXPIRES_IN=7d     # defined in .env.example, not yet used in code
 | GET/PUT/DELETE | `/api/users/:id` | Get/update/delete user |
 | GET/POST | `/api/projects` | List/create projects |
 | GET/PUT/DELETE | `/api/projects/:id` | Get/update/delete project |
+| POST | `/api/auth/register` | Register new user |
+| POST | `/api/auth/login` | Login user |
+| GET | `/api/auth/me` | Get current user (auth required) |
+
+**Note**: Task routes exist in `src/routes/tasks.ts` but are not registered in `src/index.ts`.
 
 ## Database Models (Prisma)
 `User → Project → Task → Comment` (with `Status` enum: TODO, IN_PROGRESS, DONE, CANCELLED)
