@@ -5,6 +5,7 @@ import swaggerUi from 'swagger-ui-express';
 import prisma from './config/prisma';
 import { swaggerSpec } from './config/swagger';
 import { errorMiddleware } from './middleware/error.middleware';
+import { createAuthMiddleware } from './middleware/auth.middleware';
 import { apiResponse } from './utils/api-response';
 import healthRouter from './routes/health';
 import usersRouter from './routes/users';
@@ -22,6 +23,10 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Auth global para /api (excluye POST /auth/register y POST /auth/login)
+const authMw = createAuthMiddleware();
+app.use('/api', authMw);
 
 // Routes
 app.use('/api/health', healthRouter);

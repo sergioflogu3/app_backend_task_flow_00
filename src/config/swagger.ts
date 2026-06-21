@@ -105,14 +105,12 @@ const options: swaggerJsdoc.Options = {
       '/api/users': {
         get: {
           summary: 'Listar usuarios',
-          security: [],
           responses: {
             '200': { description: 'Lista de usuarios' },
           },
         },
         post: {
           summary: 'Crear usuario',
-          security: [],
           requestBody: {
             required: true,
             content: {
